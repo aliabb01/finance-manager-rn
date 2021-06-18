@@ -1,0 +1,12 @@
+{
+  "name": "FinanceManager",
+  "displayName": "FinanceManager",
+  "expo": {
+    "name": "FinanceManager",
+    "slug": "FinanceManager",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
