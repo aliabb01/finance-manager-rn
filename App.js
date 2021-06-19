@@ -1,12 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
+
+import AddButton from './components/AddButton'
+
+// Fonts
+import {
+  useFonts,
+  OpenSans_400Regular
+} from "@expo-google-fonts/dev";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.brand}>Hello World!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.brand}>Finance Manager App</Text>
+      <StatusBar style="auto" hidden={true} />
+
+      <AddButton />
+
     </View>
   );
 }
@@ -14,14 +25,24 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',    
+    backgroundColor: 'orange', 
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 45,
+    paddingBottom: 15,
+
+    borderWidth: 1,
+    borderColor: 'blue',
+    borderStyle: 'solid',
   },
   brand: {
     borderWidth: 1,
     borderColor: 'black',
     borderStyle: 'solid',
-    padding: 10
-  }
+
+    color: 'black',
+    
+    padding: 10,
+    // fontFamily: "OpenSans_400Regular",
+    fontSize: 22
+  },
 });
