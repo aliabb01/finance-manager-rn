@@ -96,7 +96,8 @@ function Home() {
                     <BaseCard 
                         type={1} 
                         heading={'Daily expenditures:'} 
-                        body={dailyExp} 
+                        body={dailyExp}
+                        showDate={true} 
                     />
 
                     <BaseCard 

@@ -6,7 +6,7 @@ import { useFonts, SourceSansPro_700Bold_Italic } from "@expo-google-fonts/dev";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function BaseCard({ type, heading, body }) {
+export default function BaseCard({ type, heading, body, showDate }) {
   let [fontsLoaded] = useFonts({
     SourceSansPro_700Bold_Italic,
   });
@@ -27,7 +27,7 @@ export default function BaseCard({ type, heading, body }) {
     return (
       <View>
         <View style={styles.cardHeading}>
-          <Text style={styles.cardHeadingText}>{heading}</Text>
+          <Text style={styles.cardHeadingText}>{heading} {showDate && <Text>({(new Date().toISOString().slice(0, 10))})</Text>}</Text>
         </View>
 
         <LinearGradient
@@ -127,9 +127,9 @@ const styles = StyleSheet.create({
     padding: 5
   },
   elementLine: {
-    borderColor: '#F05340',
-    borderWidth: 2,
-    borderStyle: 'solid',
+    // borderColor: '#F05340',
+    // borderWidth: 2,
+    // borderStyle: 'solid',
     
     // borderTopRightRadius: 25,
     // borderBottomRightRadius: 25,
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     
-    height: 1,
+    backgroundColor: '#F05340',
+    height: 2,
     // paddingVertical: 1,
 
     flex: 1,
@@ -151,7 +152,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'red',
     borderStyle: 'dashed',
-    borderRadius: 10,
+    borderRadius: 30,
     backgroundColor: 'cyan',
 
     flex: 0.5,
