@@ -7,7 +7,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 
 import Home from "./views/Home";
-import Statistics from  "./views/Statistics"
+import Statistics from  "./views/Statistics";
+import Settings from "./views/Settings";
 import About from "./views/About";
 
 
@@ -50,6 +51,16 @@ function AppTabs() {
           options={{
             tabBarIcon: ({ color, size, focused }) => (
               <Icon type="antdesign" name="linechart" color={color} size={size} />
+            ),
+          }}
+        />
+
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            tabBarIcon: ({ color, size, focused }) => (
+              <Icon type="feather" name="settings" color={color} size={size} />
             ),
           }}
         />
