@@ -68,7 +68,7 @@ function Home() {
         },
         {
             id: 5,
-            title: 'Household',
+            title: 'Double Mop for house (sale)',
             money: 100
         }
     ]
