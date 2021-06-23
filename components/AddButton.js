@@ -1,24 +1,46 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Modal  } from "react-native";
+import { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback  } from "react-native";
 import { Icon } from "react-native-elements";
 
-function AddButton() {
+import AddModal from './AddModal'
+
+export default function AddButton({ currentDaily }) {    
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const toggleModal = () => {
+        // console.log(currentDaily)
+        setModalVisible(!modalVisible)
+    }
+
+    const [daily, setDaily] = useState(currentDaily)
 
     return (
-        <TouchableOpacity 
-            style={styles.addBtn}
-            onPress={() => alert("Hello. Here will be a form inside a modal to add finances")}
-        >
-
-                <Icon
-                    type='material'                    
-                    name='add'
-                    color='#fff'
-                    style={styles.addBtnIcon}    
-                >
-                </Icon>
+        <View>
             
-        </TouchableOpacity >
+            <AddModal 
+                visibility={modalVisible}
+                setVisibility={setModalVisible}
+                toggleFunction={toggleModal}
+            />
+
+            { !modalVisible && (
+                <TouchableOpacity 
+                style={styles.addBtn}
+                onPress={ () => toggleModal()}
+                >                
+                    <Icon
+                        type='material'                    
+                        name='add'
+                        color='#fff'
+                        style={styles.addBtnIcon}    
+                    >
+                    </Icon>
+                
+                </TouchableOpacity>
+            )}
+        </View>
     );
 }
 
@@ -56,7 +78,9 @@ const styles = StyleSheet.create({
     // borderColor: 'black',
     // borderWidth: 1,
     // borderStyle: 'solid'
-  }
+  },
+
+  
 });
 
-export default AddButton;
+// export default AddButton;
