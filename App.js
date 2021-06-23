@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, ActivityIndicator } from "react-native";
-
+import { LinearProgress } from 'react-native-elements';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
@@ -85,7 +85,7 @@ export default function App() {
 
   const closeActivityIndicator = () => setTimeout(
     () => setAnimating(false),
-    4000
+    2500
   )
 
   useEffect(() => {
@@ -96,7 +96,7 @@ export default function App() {
     
     <NavigationContainer>
       {animating 
-      ? <View style={[styles.container, styles.horizontal]}><ActivityIndicator  animating = {animating} size="large" color="#ff0000" /></View>
+      ? <View style={[styles.container, styles.horizontal]}><LinearProgress color="primary" /></View>
       : <AppTabs />}
       
     </NavigationContainer>
@@ -107,7 +107,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    alignItems: 'center'
   },
   horizontal: {
     flexDirection: "row",
