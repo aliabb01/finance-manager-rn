@@ -6,22 +6,20 @@ import { useFonts, SourceSansPro_700Bold_Italic } from "@expo-google-fonts/dev";
 
 import { LinearGradient } from "expo-linear-gradient";
 
+// import sum from '../helpers/sum'
+
 import BaseCardElement from "./BaseCardElement";
 
-export default function BaseCard({ type, heading, body, showDate }) {
+export default function BaseCard({ type, heading, body, showDate, roundedSumDaily, roundedSumMonthly }) {
   let [fontsLoaded] = useFonts({
     SourceSansPro_700Bold_Italic,
   });
 
-  const sum = (items, prop) => {
-    return items.reduce((a, b) => {
-      return a + b[prop];
-    }, 0);
-  };
 
-  const totalSum = sum(body, "money");
+  // body.map(item => item.money).reduce((prev, next) => prev + next)
+//   const totalSum = sum(body, "money");
 
-  const totalSumRounded = parseFloat(totalSum).toFixed(2);
+//   const totalSumRounded = parseFloat(totalSum).toFixed(2);
 
   if (!fontsLoaded) {
     return <ActivityIndicator />;
@@ -29,38 +27,56 @@ export default function BaseCard({ type, heading, body, showDate }) {
     return (
       <View>
         <View style={styles.cardHeading}>
-          <Text style={styles.cardHeadingText}>{heading} {showDate && <Text>({(new Date().toDateString().slice(0, 10))})</Text>}</Text>
+          <Text style={styles.cardHeadingText}>
+            {heading}{" "}
+            {showDate && (
+              <Text>({new Date().toDateString().slice(0, 10)})</Text>
+            )}
+          </Text>
         </View>
 
         <LinearGradient
           // colors={type === 1 && ["#61dbfb", "#6c8eef"]}
-          colors={["#A5D5FE", "#A5D5FE"]}
+          // #A5D5FE
+          colors={body == "" ? ["#E1E1E1", "#E1E1E1"] : ["#A5D5FE", "#A5D5FE"]}
           style={styles.card}
         >
-            <View style={styles.expBox}>
-                
-                <BaseCardElement data={body} />
+          <View style={styles.expBox}>
+            <BaseCardElement data={body} />
 
-                { body!="" && (
-                    <Text style={styles.totalExp}>
-                        Total spent:{" "}
-                        <Text style={styles.totalSum}>{totalSumRounded}$</Text>
-                    </Text>
-                )}
+            {body != "" && (
+              <Text style={styles.totalExp}>
+                Total spent:{" "}
+                <Text style={styles.totalSum}>{type===1 ? roundedSumDaily : roundedSumMonthly}$</Text>
+              </Text>
+            )}
 
-                {
-                    type === 1 && body=="" && (
-                        <Text style={{ textAlign: 'center', fontSize: 16, color: 'green' }}>No expenditures for today</Text>
-                    )
-                }
+            {type === 1 && body == "" && (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  fontStyle: "italic",
+                  color: "darkgray",
+                }}
+              >
+                No expenditures for today
+              </Text>
+            )}
 
-                {
-                    type === 2 && body=="" && (
-                        <Text style={{ textAlign: 'center', fontSize: 16, color: 'green' }}>No expenditures for this month</Text>
-                    )
-                }
-                
-            </View>
+            {type === 2 && body == "" && (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 16,
+                  fontStyle: "italic",
+                  color: "darkgray",
+                }}
+              >
+                No expenditures for this month
+              </Text>
+            )}
+          </View>
         </LinearGradient>
       </View>
     );
@@ -93,9 +109,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-//   expBox: {
-//     borderColor: "blue",
-//   },
+  //   expBox: {
+  //     borderColor: "blue",
+  //   },
 
   totalExp: {
     fontSize: 11,

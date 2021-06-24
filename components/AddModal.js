@@ -20,9 +20,17 @@ export default function AddModal({ visibility, setVisibility, toggleFunction }) 
                     <View>
                         <View style={styles.modalView}>
                             <Text style={styles.modalText}>Hello World!</Text>
+
                             <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setVisibility(!visibility)}
+                                style={[styles.button, styles.buttonClose, { marginBottom: 10 }]}
+                                onPress={() => console.log("HERE")}
+                            >
+                                <Text style={styles.textStyle}>Push to month</Text>
+                            </Pressable>
+
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => setVisibility(!visibility)}
                             >
                                 <Text style={styles.textStyle}>Hide Modal</Text>
                             </Pressable>

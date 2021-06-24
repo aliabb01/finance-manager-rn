@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 export default function BaseCardElement({ data }) {
-    return (
+    return (data &&  (
         <View>
             {data.map((item) => (
 
@@ -24,7 +24,7 @@ export default function BaseCardElement({ data }) {
                 
             ))}
         </View>
-    )
+    ))
 }
 
 const styles = StyleSheet.create({

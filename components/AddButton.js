@@ -16,6 +16,8 @@ export default function AddButton({ currentDaily }) {
 
     const [daily, setDaily] = useState(currentDaily)
 
+    
+
     return (
         <View>
             
