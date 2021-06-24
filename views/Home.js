@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, ScrollView, Button, ActivityIndicator } from 'r
 import * as Animatable from 'react-native-animatable';
 import { useFonts, Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/dev";
 
+import sum from '../helpers/sum'
+
 import BaseCard from '../components/BaseCard';
 import AddButton from "../components/AddButton";
 
@@ -11,7 +13,7 @@ function Home() {
     let [fontsLoaded] = useFonts({
         Nunito_400Regular,
         Nunito_700Bold,
-    });
+    })
 
     const dailyExp = [
         {
@@ -51,41 +53,78 @@ function Home() {
         }
     ]
 
-    const monthlyExp = [
-        {
-            id: 1,
-            title: new Date().toDateString().slice(0, 10),
-            money: 58.20
-        },
-        {
-            id: 2,
-            title: 'Rent',
-            money: 200
-        },
-        {
-            id: 3,
-            title: 'Household',
-            money: 100
-        },
-        {
-            id: 4,
-            title: 'Household',
-            money: 100
-        },
-        {
-            id: 5,
-            title: 'Double Mop for house (sale)',
-            money: 100
-        }
-    ]
+    
+
+    const [monthlyExp, setMonthlyExp] = useState([
+        // {
+        //     id: 1,
+        //     title: new Date().toDateString().slice(0, 10),
+        //     money: 58.20
+        // },
+        // {
+        //     id: 2,
+        //     title: 'Rent',
+        //     money: 200
+        // },
+        // {
+        //     id: 3,
+        //     title: 'Household',
+        //     money: 100
+        // },
+        // {
+        //     id: 4,
+        //     title: 'Household',
+        //     money: 100
+        // },
+        // {
+        //     id: 5,
+        //     title: 'Double Mop for house (sale)',
+        //     money: 100
+        // }
+    ])
+
+    const totalSumDaily = sum(dailyExp, "money");
+    const totalSumDailyRounded = parseFloat(totalSumDaily).toFixed(2);
+
+    const [totalSumMonthly, setTotalSumMonthly] = useState(sum(monthlyExp, "money"));
+    const [totalSumMonthlyRounded, setTotalSumMonthlyRounded] = useState(parseFloat(totalSumMonthly).toFixed(2));
+
+    const [id, setId] = useState(0)
+
+    const monthlySingle = {
+        id: id,
+        title: new Date().toDateString().slice(0, 10),
+        money: totalSumDailyRounded
+    }
+
+    const pushToMonth = (sumM) => {
+        setMonthlyExp([...monthlyExp, monthlySingle])   
+        //parseFloat(sum(monthlyExp, "money")) + parseFloat(monthlySingle.money)    
+        sumM = [...monthlyExp, monthlySingle].reduce((total, obj) => parseFloat(obj.money) + total, 0);
+
+        setTotalSumMonthly(sumM)
+        setTotalSumMonthlyRounded(parseFloat(sumM).toFixed(2))
+        
+        // console.log(sumM);
+
+        // setTotalSumMonthly(sum(monthlyExp, "money") + monthlySingle.money)
+        // setTotalSumMonthlyRounded(parseFloat(sum(monthlyExp, "money") + monthlySingle.money).toFixed(2))
+        setId(id+1)
+    }
+
+    //monthlyExp.push(monthlySingle)
+
+    
     
     if(!fontsLoaded) {
         return <ActivityIndicator />;
     }
     else {
         return (
-            <View>
+            <View style={{ flex: 1 }}>                
+
                 <ScrollView contentContainerStyle={styles.container}>
+                    
                     <StatusBar style="auto" hidden={true} />
                     
                     <View style={styles.brandView}>
@@ -93,7 +132,12 @@ function Home() {
                             style={styles.brandName}
                         >
                             Finance Manager            
-                        </Text>           
+                        </Text>
+
+                        <Button
+                            title="Push to month"
+                            onPress={() => pushToMonth()}
+                        ></Button>                                   
     
                         <Animatable.Text                
                             animation='fadeInRight'
@@ -109,7 +153,8 @@ function Home() {
                             type={1} 
                             heading={'Daily expenditures:'} 
                             body={dailyExp}
-                            showDate={true} 
+                            showDate={true}
+                            roundedSumDaily={totalSumDailyRounded}                             
                         />
     
                         <BaseCard 
@@ -117,6 +162,7 @@ function Home() {
                             heading={'Monthly expenditures:'} 
                             body={monthlyExp} 
                             monthly={true}
+                            roundedSumMonthly={totalSumMonthlyRounded}
                         />
                     </View>
     
