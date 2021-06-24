@@ -113,7 +113,7 @@ function Home() {
                         />
     
                         <BaseCard 
-                            type={1} 
+                            type={2} 
                             heading={'Monthly expenditures:'} 
                             body={monthlyExp} 
                             monthly={true}

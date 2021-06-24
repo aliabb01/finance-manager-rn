@@ -34,17 +34,32 @@ export default function BaseCard({ type, heading, body, showDate }) {
 
         <LinearGradient
           // colors={type === 1 && ["#61dbfb", "#6c8eef"]}
-          colors={type === 1 && ["#A5D5FE", "#A5D5FE"]}
+          colors={["#A5D5FE", "#A5D5FE"]}
           style={styles.card}
         >
             <View style={styles.expBox}>
                 
                 <BaseCardElement data={body} />
 
-                <Text style={styles.totalExp}>
-                    Total spent:{" "}
-                    <Text style={styles.totalSum}>{totalSumRounded}$</Text>
-                </Text>
+                { body!="" && (
+                    <Text style={styles.totalExp}>
+                        Total spent:{" "}
+                        <Text style={styles.totalSum}>{totalSumRounded}$</Text>
+                    </Text>
+                )}
+
+                {
+                    type === 1 && body=="" && (
+                        <Text style={{ textAlign: 'center', fontSize: 16, color: 'green' }}>No expenditures for today</Text>
+                    )
+                }
+
+                {
+                    type === 2 && body=="" && (
+                        <Text style={{ textAlign: 'center', fontSize: 16, color: 'green' }}>No expenditures for this month</Text>
+                    )
+                }
+                
             </View>
         </LinearGradient>
       </View>
