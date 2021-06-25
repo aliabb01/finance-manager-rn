@@ -131,8 +131,6 @@ export default function BaseCardElement({ data, type, total, setDaily }) {
 
 const styles = StyleSheet.create({
   singleExpView: {
-    padding: 10,
-
     // flex: 1,
     // flexDirection: 'row',
     // alignItems: 'center',
@@ -142,12 +140,23 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: "black",
     // borderStyle: "solid",
+        
+    
   },
   singleExpElem: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    padding: 10,
+
+    // elevation: 15,
+    
+    backgroundColor: '#A5D5FE'
+
+    // borderWidth: 1,
+    // borderColor: "black",
+    // borderStyle: "solid",
 
     
   },
@@ -195,6 +204,24 @@ const styles = StyleSheet.create({
 
     padding: 5
     
+  },
+//   elementRemove: {
+//     flex: 0.25,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginLeft: 5,
+
+//     width: 30,
+//     height: 30,
+//     borderRadius: 30,
+    
+
+//     borderWidth: 1,
+//     borderColor: 'black',
+//     borderStyle: 'solid'
+//   },
+  elementRemoveText: {
+    // textAlign: 'center',
   },
   rightDelete: {
     backgroundColor: '#ED5959',
