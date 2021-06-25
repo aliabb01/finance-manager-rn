@@ -23,6 +23,26 @@ export default function BaseCardElement({ data }) {
                 </View>
                 
             ))}
+
+            {type==2 && (
+                unique(data, "title").map((item) => (
+                    <View key={item.id} style={styles.singleExpView}>
+                    {/* • {item.title}: {item.money}$ */}
+
+                        <View style={styles.singleExpElem}>
+                            <View style={styles.elementTitleView}>
+                                <Text style={{ textAlign: 'center' }}>{item.title}</Text>
+                            </View>
+                            <View style={styles.elementLine}>
+                                <Text style={styles.elementLineText}></Text>
+                            </View>
+                            <View style={styles.elementMoney}>
+                                <Text style={{ textAlign: 'center' }}>{parseFloat(total).toFixed(2)} $</Text>
+                            </View>
+                        </View>
+                    </View>
+                ))
+            )}
         </View>
     ))
 }
