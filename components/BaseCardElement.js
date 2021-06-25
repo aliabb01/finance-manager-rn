@@ -38,6 +38,31 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     )
 }
 
+const LeftEditAction = ({ progress, dragX }) => {
+    const scale = dragX.interpolate({
+        inputRange: [0, 50],
+        outputRange: [0, 1.0],
+        extrapolate: 'clamp'
+    });
+
+    return (
+        
+            <TouchableOpacity style={{ justifyContent: 'center', flex: 0.3 }} onPress={() => alert("FORM HERE")}>
+                <View style={styles.leftEdit}>
+                    
+                    <Animated.View style={[styles.leftEditText, { transform: [{ scale }]}]}>
+                        <Icon 
+                            name="edit"
+                            type="antdesign"
+                            color="white"
+                        />
+                    </Animated.View>
+                </View>
+            </TouchableOpacity>
+        
+    )
+}
+
 export default function BaseCardElement({ data, type, total, setDaily }) {
     
     return (data &&  (
@@ -192,4 +217,23 @@ const styles = StyleSheet.create({
 
     // textAlign: 'right'
   },
+  leftEdit: {
+    backgroundColor: '#2ecc71',
+    elevation: 2,
+    // flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+
+    paddingHorizontal: 5,
+
+    borderRadius: 5,
+  },
+  leftEditText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    padding: 10,
+
+    // textAlign: 'right'
+  }
 })
