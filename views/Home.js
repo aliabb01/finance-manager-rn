@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import { useFonts, Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/dev";
 
 import sum from '../helpers/sum'
+import unique from '../helpers/unique'
 
 import BaseCard from '../components/BaseCard';
 import AddButton from "../components/AddButton";
@@ -15,43 +16,35 @@ function Home() {
         Nunito_700Bold,
     })
 
-    const dailyExp = [
-        {
-            id: 1,
-            title: 'Bread',
-            money: 0.60
-        },
-        {
-            id: 2,
-            title: 'Transport',
-            money: 2
-        },
-        {
-            id: 3,
-            title: 'Jacket',
-            money: 30
-        },
-        {
-            id: 4,
-            title: 'Shirt',
-            money: 25
-        },
-        {
-            id: 5,
-            title: 'Pen',
-            money: 0.2
-        },
-        {
-            id: 6,
-            title: 'Pen',
-            money: 0.2
-        },
-        {
-            id: 7,
-            title: 'Pen',
-            money: 0.2
-        }
-    ]
+    const [dailyExp, setDailyExp] = useState(
+        [
+            {
+                id: 1,
+                title: 'Bread',
+                money: 0.60
+            },
+            {
+                id: 2,
+                title: 'Transport',
+                money: 2
+            },
+            {
+                id: 3,
+                title: 'Jacket',
+                money: 30
+            },
+            {
+                id: 4,
+                title: 'Shirt',
+                money: 25
+            },
+            {
+                id: 5,
+                title: 'Pen',
+                money: 0.2
+            }
+        ]
+    )
 
     
 
@@ -89,28 +82,90 @@ function Home() {
     const [totalSumMonthly, setTotalSumMonthly] = useState(sum(monthlyExp, "money"));
     const [totalSumMonthlyRounded, setTotalSumMonthlyRounded] = useState(parseFloat(totalSumMonthly).toFixed(2));
 
-    const [id, setId] = useState(0)
+    const [monthlyId, setMonthlyId] = useState(0)
 
     const monthlySingle = {
-        id: id,
+        id: monthlyId,
         title: new Date().toDateString().slice(0, 10),
         money: totalSumDailyRounded
     }
 
-    const pushToMonth = (sumM) => {
-        setMonthlyExp([...monthlyExp, monthlySingle])   
-        //parseFloat(sum(monthlyExp, "money")) + parseFloat(monthlySingle.money)    
-        sumM = [...monthlyExp, monthlySingle].reduce((total, obj) => parseFloat(obj.money) + total, 0);
+    // PUSH TO MONTH
 
-        setTotalSumMonthly(sumM)
-        setTotalSumMonthlyRounded(parseFloat(sumM).toFixed(2))
+    // const pushToMonth = (sumM) => {
+    //     setMonthlyExp([...monthlyExp, monthlySingle])  
+    //     //parseFloat(sum(monthlyExp, "money")) + parseFloat(monthlySingle.money)    
+    //     sumM = [...monthlyExp, monthlySingle].reduce((total, obj) => parseFloat(obj.money) + total, 0);
+
+    //     setTotalSumMonthly(sumM)
+    //     setTotalSumMonthlyRounded(parseFloat(sumM).toFixed(2))
         
-        // console.log(sumM);
+    //     // console.log(sumM);
 
-        // setTotalSumMonthly(sum(monthlyExp, "money") + monthlySingle.money)
-        // setTotalSumMonthlyRounded(parseFloat(sum(monthlyExp, "money") + monthlySingle.money).toFixed(2))
-        setId(id+1)
+    //     // setTotalSumMonthly(sum(monthlyExp, "money") + monthlySingle.money)
+    //     // setTotalSumMonthlyRounded(parseFloat(sum(monthlyExp, "money") + monthlySingle.money).toFixed(2))
+    //     setMonthlyId(monthlyId+1)
+    // }
+
+    // PUSH TO DAY
+
+    const [dailyId, setDailyId] = useState(dailyExp.length + 1)
+
+    const dailySingle = {
+        id: dailyId,
+        title: "BrEaD",
+        money: 12
     }
+
+    const [duplicateDaily, setDuplicateDaily] = useState(false)
+
+    const pushToDay = () => {
+        
+
+        dailyExp.some((daily) => {
+            if(daily.title === dailySingle.title) {
+                console.log("yes");
+                // dailyExp.filter((item) => {                
+                //     if(item.title == dailySingle.title) {
+                //         item.money += dailySingle.money
+                //     }
+                // })
+                
+                setDuplicateDaily(true)
+                // daily.money+=dailySingle.money
+
+                const index = dailyExp.indexOf(daily)
+                dailyExp.splice(index, 1)
+                dailySingle.money+= daily.money
+
+                setDailyExp([...dailyExp, dailySingle])
+                setDailyId(dailyId+1)
+            }
+            else {
+                setDailyExp([...dailyExp, dailySingle])
+                setDailyId(dailyId+1)
+            }
+            
+        })
+
+        
+            
+
+            // dailyFilteredExp.money+=dailySingle.money
+        
+
+        
+            
+        
+
+        
+
+        // console.log(dailyFilteredExp);
+
+        // console.log(dailyExp.map((item) => item.title))
+    }
+
+    
 
     //monthlyExp.push(monthlySingle)
 
@@ -135,8 +190,8 @@ function Home() {
                         </Text>
 
                         <Button
-                            title="Push to month"
-                            onPress={() => pushToMonth()}
+                            title="Push to day"
+                            onPress={() => pushToDay()}
                         ></Button>                                   
     
                         <Animatable.Text                
@@ -154,7 +209,8 @@ function Home() {
                             heading={'Daily expenditures:'} 
                             body={dailyExp}
                             showDate={true}
-                            roundedSumDaily={totalSumDailyRounded}                             
+                            roundedSumDaily={totalSumDailyRounded}
+                            setDaily={setDailyExp}                             
                         />
     
                         <BaseCard 
