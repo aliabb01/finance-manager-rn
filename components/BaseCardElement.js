@@ -1,26 +1,51 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { Icon } from 'react-native-elements'
 
-export default function BaseCardElement({ data }) {
+import unique from '../helpers/unique'
+
+
+export default function BaseCardElement({ data, type, total, setDaily }) {
+    
     return (data &&  (
         <View>
             {data.map((item) => (
 
+                type==1 && (
+
                 <View key={item.id} style={styles.singleExpView}>
                     {/* • {item.title}: {item.money}$ */}
 
-                    <View style={styles.singleExpElem}>
-                        <View style={styles.elementTitleView}>
-                            <Text style={{ textAlign: 'center' }}>{item.title}</Text>
+                    <Swipeable                
+                        renderRightActions={(progress, dragX, setD, itemId) => <RightDeleteAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} />}
+                        renderLeftActions={(progress, dragX) => <LeftEditAction progress={progress} dragX={dragX} />}
+                        // onSwipeableRightOpen={() => deleteDaily(item.id)}
+                        // onActivated={() => addBorder()}
+                        friction={1.5}
+                    >
+                        <View style={styles.singleExpElem}>
+                            <View style={styles.elementTitleView}>
+                                <Text style={{ textAlign: 'center' }}>{item.title}</Text>
+                            </View>
+                            <View style={styles.elementLine}>
+                                <Text style={styles.elementLineText}></Text>
+                            </View>
+                            <View style={styles.elementMoney}>
+                                <Text style={{ textAlign: 'center' }}>{parseFloat(item.money).toFixed(2)} $</Text>
+                            </View>
+
+                            {/* <View >
+                                <TouchableOpacity 
+                                    // style={styles.elementRemoveText}
+                                >
+                                </TouchableOpacity>
+                            </View>                     */}
                         </View>
-                        <View style={styles.elementLine}>
-                            <Text style={styles.elementLineText}></Text>
-                        </View>
-                        <View style={styles.elementMoney}>
-                            <Text style={{ textAlign: 'center' }}>{parseFloat(item.money).toFixed(2)} $</Text>
-                        </View>
-                    </View>
+                    </Swipeable>
+
                 </View>
+                )
                 
             ))}
 
