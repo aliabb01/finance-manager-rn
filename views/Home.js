@@ -113,7 +113,7 @@ function Home() {
 
     const dailySingle = {
         id: dailyId,
-        title: "BrEaD",
+        title: "Bread",
         money: 12
     }
 
@@ -124,7 +124,7 @@ function Home() {
 
         dailyExp.some((daily) => {
             if(daily.title === dailySingle.title) {
-                console.log("yes");
+                // console.log("yes");
                 // dailyExp.filter((item) => {                
                 //     if(item.title == dailySingle.title) {
                 //         item.money += dailySingle.money
@@ -147,6 +147,9 @@ function Home() {
             }
             
         })
+
+        setDailyExp([...dailyExp, dailySingle])
+        setDailyId(dailyId+1)
 
         
             
