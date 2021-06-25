@@ -10,16 +10,31 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import BaseCardElement from "./BaseCardElement";
 
-export default function BaseCard({ type, heading, body, showDate, roundedSumDaily, roundedSumMonthly }) {
+export default function BaseCard({
+  type,
+  heading,
+  body,
+  showDate,
+  roundedSumDaily,
+  roundedSumMonthly,
+  setDaily,
+}) {
   let [fontsLoaded] = useFonts({
     SourceSansPro_700Bold_Italic,
   });
 
+  // DELETE FROM DAY
+
+  //   const deleteFromDay = (id) => {
+  //     setDaily((prevDaily) => {
+  //       return prevDaily.filter(daily => daily.id != id)
+  //     });
+  // }
 
   // body.map(item => item.money).reduce((prev, next) => prev + next)
-//   const totalSum = sum(body, "money");
+  //   const totalSum = sum(body, "money");
 
-//   const totalSumRounded = parseFloat(totalSum).toFixed(2);
+  //   const totalSumRounded = parseFloat(totalSum).toFixed(2);
 
   if (!fontsLoaded) {
     return <ActivityIndicator />;
@@ -42,12 +57,19 @@ export default function BaseCard({ type, heading, body, showDate, roundedSumDail
           style={styles.card}
         >
           <View style={styles.expBox}>
-            <BaseCardElement data={body} />
+            <BaseCardElement
+              data={body}
+              type={type}
+              total={roundedSumMonthly}
+              setDaily={setDaily}
+            />
 
             {body != "" && (
               <Text style={styles.totalExp}>
                 Total spent:{" "}
-                <Text style={styles.totalSum}>{type===1 ? roundedSumDaily : roundedSumMonthly}$</Text>
+                <Text style={styles.totalSum}>
+                  {type === 1 ? roundedSumDaily : roundedSumMonthly}$
+                </Text>
               </Text>
             )}
 
