@@ -5,6 +5,38 @@ import { Icon } from 'react-native-elements'
 
 import unique from '../helpers/unique'
 
+const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
+    const scale = dragX.interpolate({
+        inputRange: [-50, 0],
+        outputRange: [1.0, 0],
+        extrapolate: 'clamp'
+    });
+
+    const deleteFromDay = (id) => {
+        setDailyExp((prevDaily) => {
+          return prevDaily.filter(daily => daily.id != id)
+        });
+    }
+
+    return (
+        // style={{ flex: 1 }}
+        
+            <TouchableOpacity style={{ justifyContent: 'center', flex: 0.3 }} onPress={() => deleteFromDay(itemId)}>
+                <View style={styles.rightDelete}>
+                    
+                    <Animated.View style={[styles.rightDeleteText, { transform: [{ scale }]}]}>
+                        <Icon 
+                            name="delete"
+                            type="antdesign"
+                            color="white"
+                        />
+                    </Animated.View>
+                </View>
+            </TouchableOpacity>
+        
+        
+    )
+}
 
 export default function BaseCardElement({ data, type, total, setDaily }) {
     
@@ -138,5 +170,26 @@ const styles = StyleSheet.create({
 
     padding: 5
     
+  },
+  rightDelete: {
+    backgroundColor: '#ED5959',
+    elevation: 2,
+    // flex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+
+    paddingHorizontal: 5,
+
+    borderRadius: 5,
+  },
+  rightDeleteText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+    padding: 10,
+
+    alignItems: 'center'
+
+    // textAlign: 'right'
   },
 })
