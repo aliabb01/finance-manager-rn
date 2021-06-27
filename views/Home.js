@@ -113,8 +113,8 @@ function Home() {
 
     const dailySingle = {
         id: dailyId,
-        title: "Bread",
-        money: 12
+        title: "Paper",
+        money: 0.3
     }
 
     const [duplicateDaily, setDuplicateDaily] = useState(false)
@@ -131,7 +131,7 @@ function Home() {
                 //     }
                 // })
                 
-                setDuplicateDaily(true)
+                // setDuplicateDaily(true)
                 // daily.money+=dailySingle.money
 
                 const index = dailyExp.indexOf(daily)
@@ -227,7 +227,14 @@ function Home() {
     
                 </ScrollView>
     
-                <AddButton currentDaily={dailyExp} />
+                <AddButton 
+                    currentDaily={dailyExp}
+                    dailyExpenditure={dailyExp}
+                    dailySingleExpenditure={dailySingle}
+                    setDailyExpenditure={setDailyExp}
+                    dailyId={dailyId}
+                    setDailyId={setDailyId}
+                />
             </View>     
         )
     }
