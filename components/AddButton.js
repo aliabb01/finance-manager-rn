@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 
 import AddModal from './AddModal'
 
-export default function AddButton({ currentDaily }) {    
+export default function AddButton({ currentDaily, dailyExpenditure, dailySingleExpenditure, setDailyExpenditure, dailyId, setDailyId }) {    
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -25,6 +25,13 @@ export default function AddButton({ currentDaily }) {
                 visibility={modalVisible}
                 setVisibility={setModalVisible}
                 toggleFunction={toggleModal}
+
+                dailyExp={dailyExpenditure}
+                dailySingle={dailySingleExpenditure}
+                setDaily={setDailyExpenditure}
+                dailyId={dailyId}
+                setDailyId={setDailyId}
+                
             />
 
             { !modalVisible && (

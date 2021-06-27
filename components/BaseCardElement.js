@@ -21,7 +21,7 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     return (
         // style={{ flex: 1 }}
         
-            <TouchableOpacity style={{ justifyContent: 'center', flex: 0.3 }} onPress={() => deleteFromDay(itemId)}>
+            <TouchableOpacity style={{ justifyContent: 'flex-start', flex: 0.3 }} onPress={() => deleteFromDay(itemId)}>
                 <View style={styles.rightDelete}>
                     
                     <Animated.View style={[styles.rightDeleteText, { transform: [{ scale }]}]}>
@@ -83,6 +83,10 @@ export default function BaseCardElement({ data, type, total, setDaily }) {
                     >
                         <View style={styles.singleExpElem}>
                             <View style={styles.elementTitleView}>
+                            {/* 
+                                {data.indexOf(item) + 1}: 
+                                ({item.id})
+                            */}
                                 <Text style={{ textAlign: 'center' }}>{item.title}</Text>
                             </View>
                             <View style={styles.elementLine}>
