@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Animated, FlatList } from 'react-native'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
 import { Icon } from 'react-native-elements'
@@ -21,8 +21,8 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     return (
         // style={{ flex: 1 }}
         
-            <TouchableOpacity style={{ justifyContent: 'flex-start', flex: 0.3 }} onPress={() => deleteFromDay(itemId)}>
-                <View style={styles.rightDelete}>
+            <View style={{ justifyContent: 'center', flex: 0.3 }}>
+                <TouchableOpacity style={styles.rightDelete} onPress={() => deleteFromDay(itemId)}>
                     
                     <Animated.View style={[styles.rightDeleteText, { transform: [{ scale }]}]}>
                         <Icon 
@@ -31,8 +31,8 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
                             color="white"
                         />
                     </Animated.View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
         
         
     )
@@ -45,10 +45,16 @@ const LeftEditAction = ({ progress, dragX }) => {
         extrapolate: 'clamp'
     });
 
+    // const [pr, setPr] = useState(progress)
+
+    // useEffect(() => {
+    //     setPr(progress)
+    // })
+
     return (
         
-            <TouchableOpacity style={{ justifyContent: 'center', flex: 0.3 }} onPress={() => alert("FORM HERE")}>
-                <View style={styles.leftEdit}>
+            <View style={{ justifyContent: 'center', flex: 0.3 }}>
+                <TouchableOpacity style={styles.leftEdit} onPress={() => alert("FORM HERE")}>
                     
                     <Animated.View style={[styles.leftEditText, { transform: [{ scale }]}]}>
                         <Icon 
@@ -57,8 +63,8 @@ const LeftEditAction = ({ progress, dragX }) => {
                             color="white"
                         />
                     </Animated.View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
         
     )
 }
