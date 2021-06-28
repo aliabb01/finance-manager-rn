@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, ActivityIndicator } from "react-native";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 
@@ -6,9 +6,12 @@ import { useFonts, SourceSansPro_700Bold_Italic } from "@expo-google-fonts/dev";
 
 import { LinearGradient } from "expo-linear-gradient";
 
-// import sum from '../helpers/sum'
 
 import BaseCardElement from "./BaseCardElement";
+import { useEffect } from "react";
+
+import BaseSkeletonLoader from '../components/BaseSkeletonLoader'
+// import  from "react/cjs/react.development";
 
 export default function BaseCard({
   type,
@@ -18,10 +21,22 @@ export default function BaseCard({
   roundedSumDaily,
   roundedSumMonthly,
   setDaily,
+  loading
 }) {
+
+  
+
   let [fontsLoaded] = useFonts({
     SourceSansPro_700Bold_Italic,
   });
+
+  // useEffect(() => {
+  //   let timer = setTimeout(() => setLoading(false), 1500)
+
+  //   return () => {
+  //     clearTimeout(timer);
+  //   }
+  // }, [])
 
   // DELETE FROM DAY
 
@@ -39,7 +54,14 @@ export default function BaseCard({
   if (!fontsLoaded) {
     return <ActivityIndicator />;
   } else {
+
+    if(loading) {
+        return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><BaseSkeletonLoader style={styles.card} /></View>
+    }
+    
+    else {
     return (
+
       <View>
         <View style={styles.cardHeading}>
           <Text style={styles.cardHeadingText}>
@@ -103,6 +125,7 @@ export default function BaseCard({
       </View>
     );
   }
+}
 }
 
 const styles = StyleSheet.create({
