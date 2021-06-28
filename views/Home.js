@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, ScrollView, Button, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, ActivityIndicator, RefreshControl } from 'react-native';
+import { NativeModules } from "react-native";
 import * as Animatable from 'react-native-animatable';
 import { useFonts, Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/dev";
 
@@ -11,6 +12,7 @@ import BaseCard from '../components/BaseCard';
 import AddButton from "../components/AddButton";
 
 function Home() {
+
     let [fontsLoaded] = useFonts({
         Nunito_400Regular,
         Nunito_700Bold,
@@ -117,71 +119,106 @@ function Home() {
         money: 0.3
     }
 
-    const [duplicateDaily, setDuplicateDaily] = useState(false)
+    // const [duplicateDaily, setDuplicateDaily] = useState(false)
 
-    const pushToDay = () => {
+    // const pushToDay = () => {
         
 
-        dailyExp.some((daily) => {
-            if(daily.title === dailySingle.title) {
-                // console.log("yes");
-                // dailyExp.filter((item) => {                
-                //     if(item.title == dailySingle.title) {
-                //         item.money += dailySingle.money
-                //     }
-                // })
+    //     dailyExp.some((daily) => {
+    //         if(daily.title === dailySingle.title) {
+    //             // console.log("yes");
+    //             // dailyExp.filter((item) => {                
+    //             //     if(item.title == dailySingle.title) {
+    //             //         item.money += dailySingle.money
+    //             //     }
+    //             // })
                 
-                // setDuplicateDaily(true)
-                // daily.money+=dailySingle.money
+    //             // setDuplicateDaily(true)
+    //             // daily.money+=dailySingle.money
 
-                const index = dailyExp.indexOf(daily)
-                dailyExp.splice(index, 1)
-                dailySingle.money+= daily.money
+    //             const index = dailyExp.indexOf(daily)
+    //             dailyExp.splice(index, 1)
+    //             dailySingle.money+= daily.money
 
-                setDailyExp([...dailyExp, dailySingle])
-                setDailyId(dailyId+1)
-            }
-            else {
-                setDailyExp([...dailyExp, dailySingle])
-                setDailyId(dailyId+1)
-            }
+    //             setDailyExp([...dailyExp, dailySingle])
+    //             setDailyId(dailyId+1)
+    //         }
+    //         else {
+    //             setDailyExp([...dailyExp, dailySingle])
+    //             setDailyId(dailyId+1)
+    //         }
             
-        })
+    //     })
 
-        setDailyExp([...dailyExp, dailySingle])
-        setDailyId(dailyId+1)
-
-        
-            
-
-            // dailyFilteredExp.money+=dailySingle.money
-        
+    //     setDailyExp([...dailyExp, dailySingle])
+    //     setDailyId(dailyId+1)
 
         
             
+
+    //         // dailyFilteredExp.money+=dailySingle.money
+        
+
+        
+            
         
 
         
 
-        // console.log(dailyFilteredExp);
+    //     // console.log(dailyFilteredExp);
 
-        // console.log(dailyExp.map((item) => item.title))
-    }
+    //     // console.log(dailyExp.map((item) => item.title))
+    // }
 
     
 
     //monthlyExp.push(monthlySingle)
 
-    
+    const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const [refreshing, setRefreshing] = useState(false)
+
+    const [loading, setLoading] = useState(true)
+
+    const closeSkeleton = () => {
+        setTimeout(() => {
+        setLoading(false)
+        }, 2000)
+    }    
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true)
+        wait(0).then(() => setRefreshing(false)).then(() => {
+            // NativeModules.DevSettings.reload();
+            setLoading(true)
+            wait(2000).then(() => setLoading(false))
+        })
+        
+    })
+
+    useEffect(() => {
+        closeSkeleton()
+    }, [])
     
     if(!fontsLoaded) {
         return <ActivityIndicator />;
     }
     else {
         return (
-            <View style={{ flex: 1 }}>                
+            <View style={{ flex: 1 }}>                           
 
-                <ScrollView contentContainerStyle={styles.container}>
+                <ScrollView contentContainerStyle={styles.container}
+                    refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                          colors={['#6C8EEF']}
+                          progressBackgroundColor={'#e1e1e1'}
+                          size={1}
+                        />
+                    }
+                >
                     
                     <StatusBar style="auto" hidden={true} />
                     
@@ -192,10 +229,12 @@ function Home() {
                             Finance Manager            
                         </Text>
 
-                        <Button
+                        {/* <Button
                             title="Push to day"
                             onPress={() => pushToDay()}
-                        ></Button>                                   
+                        ></Button>                                    */}
+
+                        {/* <Button title="Hello" onPress={() => NativeModules.DevSettings.reload()} /> */}
     
                         <Animatable.Text                
                             animation='fadeInRight'
@@ -213,7 +252,8 @@ function Home() {
                             body={dailyExp}
                             showDate={true}
                             roundedSumDaily={totalSumDailyRounded}
-                            setDaily={setDailyExp}                             
+                            setDaily={setDailyExp}
+                            loading={loading}                             
                         />
     
                         <BaseCard 
@@ -222,6 +262,7 @@ function Home() {
                             body={monthlyExp} 
                             monthly={true}
                             roundedSumMonthly={totalSumMonthlyRounded}
+                            loading={loading}   
                         />
                     </View>
     

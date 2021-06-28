@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, Button, ActivityIndicator, RefreshControl } from "react-native";
 import { LinearProgress } from 'react-native-elements';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,6 +15,7 @@ import About from "./views/About";
 
 // Fonts
 import { useFonts, OpenSans_400Regular } from "@expo-google-fonts/dev";
+import { useCallback } from "react";
 
 const Tab = createBottomTabNavigator();
 
@@ -79,7 +80,18 @@ function AppTabs() {
   );
 }
 
+// const wait = (timeout) => {
+//   return new Promise(resolve => setTimeout(resolve, timeout));
+// }
+
 export default function App() {
+
+//   const [refreshing, setRefreshing] = useState(false)
+
+//   const onRefresh = useCallback(() => {
+//     setRefreshing(true)
+//     wait(2000).then(() => setRefreshing(false))
+//   })
 
   const [animating, setAnimating] = useState(true);
 
@@ -95,6 +107,15 @@ export default function App() {
   return (
     
     <NavigationContainer>
+      {/* <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+      </ScrollView> */}
       {animating 
       ? <View style={[styles.container, styles.horizontal]}><LinearProgress color="primary" /></View>
       : <AppTabs />}
