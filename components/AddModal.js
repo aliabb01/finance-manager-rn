@@ -22,6 +22,56 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
 
     const ref_inputPrice = useRef()
 
+    const [oldPrice, setOldPrice] = useState('')
+
+    const [errors, setErrors] = useState({})
+
+    const setNameError = () => {
+        setErrors({
+            'formItem': 'Please enter name of the item'
+        })
+    }
+
+    const setPriceError = () => {
+        setErrors({
+            'formItemPrice': 'Please enter price of the item'
+        })
+    }
+
+    const setBothErrors = () => {
+        setErrors({
+            'formItem': 'Please enter name of the item',
+            'formItemPrice': 'Please enter price of the item'
+        })
+    }
+
+    const handleNameChange = (value) => {
+        setFormItem(value)
+
+        if(value == '') {
+            setErrors({
+                ...errors, 'formItem': 'Please enter name of the item'
+            })
+        }
+        else {
+            setErrors('')
+        }
+    } 
+
+    const handlePriceChange = (value) => {
+        setFormItemPrice(value)
+        setOldPrice(value.toString())
+
+        if(value == (null || 0)) {
+            setErrors({
+                ...errors, 'formItemPrice': 'Please enter price of the item'
+            })
+        }
+        else {
+            setErrors('')
+        }
+    }
+
     const push = () => {
         dailyExp.some((daily) => {
             if(daily.title === form.title) {
@@ -38,23 +88,38 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
 
                 const index = dailyExp.indexOf(daily)
                 dailyExp.splice(index, 1)
-                form.money+= daily.money
 
-                setDaily([...dailyExp, form])
-                setDailyId(dailyId + 1)
-                ToastAndroid.show(form.title + " - " + form.money + "$" + " was added to daily expenditures", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
-            }
-            else {
-                setDaily([...dailyExp, form])
-                setDailyId(dailyId + 1)
-                ToastAndroid.show(form.title + " - " + form.money + "$" + " was added to daily expenditures", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+                form.money+= daily.money
             }
         })
-        
-        // setVisibility(!visibility)
 
-        // setDaily([...dailyExp, form])
-        // setDailyId(dailyId+1)
+        setDaily([...dailyExp, form])
+        setDailyId(dailyId + 1)
+        ToastAndroid.show(form.title + " - " + oldPrice + "$" + " was added to daily expenditures", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+        setFormItem('')
+        setFormItemPrice(0)
+    }
+
+    
+
+
+    const handlePushDaily = () => {
+        if(formItem != '' && formItemPrice != (null || 0)) {
+            push()
+        }
+        else if(formItem == '' && formItemPrice != (null || 0)) {
+            setNameError()
+        }
+        else if(formItem != '' && formItemPrice == (null || 0)) {
+            setPriceError()
+        }
+        else {
+            setBothErrors()
+            // console.log("ERR", errors)
+            alert("Enter details first")
+        }
+
+        // console.log(errors)
     }
 
     const closeModal = () => {
@@ -86,40 +151,50 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
                             <Text style={styles.modalText}>Add new expenditure: </Text>
 
                             <Input
+                                containerStyle={{ marginTop: 20 }}
                                 label='Item:'
-                                labelStyle={{ fontSize: 13 }}
+                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: '#6C8EEF' }}
                                 inputStyle={{ fontSize: 15 }}
                                 inputContainerStyle={{ borderBottomColor: inputNameBorder }}
                                 onFocus={() => setInputNameBorder('#2196F3')}
                                 onBlur={() => setInputNameBorder('gray')}
                                 placeholder='Enter Item'
-                                onChangeText={value => setFormItem(value)}
+                                onChangeText={handleNameChange}
                                 // onTextInput={() => console.log(formItem)}
                                 returnKeyType='next'
                                 onSubmitEditing={() => ref_inputPrice.current.focus()}
+                                errorMessage={errors.formItem}
                             />
 
                             <Input
+                                containerStyle={{ marginTop: 20, marginBottom: 20 }}
                                 label='Price:'
-                                labelStyle={{ fontSize: 13 }}
+                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: '#6C8EEF' }}
                                 inputStyle={{ fontSize: 15 }}
                                 inputContainerStyle={{ borderBottomColor: inputPriceBorder }}
                                 onFocus={() => setInputPriceBorder('#2196F3')}
                                 onBlur={() => setInputPriceBorder('gray')}
                                 placeholder='Enter price'
-                                onChangeText={value => setFormItemPrice(value)}
+                                onChangeText={handlePriceChange}
                                 // onTextInput={() => console.log(formItemPrice)}
                                 keyboardType='numeric'
                                 returnKeyType='done'
                                 ref={ref_inputPrice}
+                                errorMessage={errors.formItemPrice}
+                                rightIcon={
+                                    <Icon 
+                                        name='dollar-sign'
+                                        type='feather'
+                                    />
+                                }
                             />
 
-                            <Pressable
+                            <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => push()}
+                                onPress={() => handlePushDaily()}
                             >
                                 <Text style={styles.textStyle}>Add to list</Text>
-                            </Pressable>
+                            </TouchableOpacity>
 
                             <TouchableOpacity
                                 style={styles.buttonClose}
@@ -128,7 +203,7 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
                                 <Icon 
                                     name="close"
                                     type="antdesign"
-                                    color="white"
+                                    color="#6C8EEF"
                                 />
                             </TouchableOpacity>
                         </View>
@@ -165,14 +240,14 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#6C8EEF',
     borderRadius: 20,
     padding: 10,
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "white",
     borderRadius: 30,
-    padding: 2,
+    padding: 4,
     position: 'absolute',
     right: 10,
     top: 10
