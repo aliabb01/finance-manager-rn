@@ -5,6 +5,8 @@ import { Icon } from 'react-native-elements'
 
 import unique from '../helpers/unique'
 
+import EditModal from './EditModal'
+
 const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     const scale = dragX.interpolate({
         inputRange: [-50, 0],
@@ -38,7 +40,7 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     )
 }
 
-const LeftEditAction = ({ progress, dragX }) => {
+const LeftEditAction = ({ progress, dragX, setDailyExp, itemId, d }) => {
     const scale = dragX.interpolate({
         inputRange: [0, 50],
         outputRange: [0, 1.0],
@@ -51,10 +53,27 @@ const LeftEditAction = ({ progress, dragX }) => {
     //     setPr(progress)
     // })
 
+    const [editModalVisibility, setEditModalVisibility] = useState(false)
+
+    const editDaily = (id) => {
+        return d.filter(daily => daily.id == id)
+    } 
+
+    // const [editElem, setEditElem] = useState(editDaily(itemId))       
+
+    const handleLeftEditClick = () => {
+        setEditModalVisibility(!editModalVisibility)
+        // setEditElem(editDaily(itemId))
+    }
+
+    // useEffect(() => {
+        
+    // }, [])
+
     return (
         
             <View style={{ justifyContent: 'center', flex: 0.3 }}>
-                <TouchableOpacity style={styles.leftEdit} onPress={() => alert("FORM HERE")}>
+                <TouchableOpacity style={styles.leftEdit} onPress={() => handleLeftEditClick()}>
                     
                     <Animated.View style={[styles.leftEditText, { transform: [{ scale }]}]}>
                         <Icon 
@@ -64,6 +83,12 @@ const LeftEditAction = ({ progress, dragX }) => {
                         />
                     </Animated.View>
                 </TouchableOpacity>
+
+                <EditModal 
+                    visibility={editModalVisibility}
+                    setVisibility={setEditModalVisibility}
+                    editEl={editDaily(itemId)}
+                />                
             </View>
         
     )
@@ -82,7 +107,7 @@ export default function BaseCardElement({ data, type, total, setDaily }) {
 
                     <Swipeable                
                         renderRightActions={(progress, dragX, setD, itemId) => <RightDeleteAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} />}
-                        renderLeftActions={(progress, dragX) => <LeftEditAction progress={progress} dragX={dragX} />}
+                        renderLeftActions={(progress, dragX, setD, itemId, d) => <LeftEditAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} d={data} />}
                         // onSwipeableRightOpen={() => deleteDaily(item.id)}
                         // onActivated={() => addBorder()}
                         friction={1.5}
