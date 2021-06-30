@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Modal, Pressable, TouchableOpacity, Keyboard, ToastAndroid } from 'react-native'
+import { StyleSheet, Text, View, Modal, Pressable, TouchableOpacity, Keyboard, ToastAndroid, ActivityIndicator } from 'react-native'
 
 import { Icon } from "react-native-elements";
 import { Input } from 'react-native-elements';
@@ -8,7 +8,11 @@ import { Input } from 'react-native-elements';
 export default function EditModal({ visibility, setVisibility, editEl, setDExp, ID, dailyData }) {
     const closeModal = () => {           
         setVisibility(!visibility)
-    }    
+        // setSaveBtnColor('hsla(78, 52%, 52%, 0.3)')
+        setSaveBtnDisabled(true)
+    }
+    
+    const [saving, setSaving] = useState(false)
 
     const [editElTitle, setEditElTitle] = useState(editEl[0].title)
     const [editElPrice, setEditElPrice] = useState(editEl[0].money)
@@ -18,6 +22,8 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
         title: editElTitle,
         money: parseFloat(editElPrice),
     })
+
+    const [saveBtnDisabled, setSaveBtnDisabled] = useState(true)
 
     const handleEditName = (value) => {
         setEditElTitle(value)
@@ -29,6 +35,8 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
 
     const editDaily = (id) => {
 
+        setSaving(true)
+        
         const objIndex = dailyData.findIndex((obj => obj.id == id))
         
         dailyData.some((daily) => {
@@ -46,8 +54,11 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
 
         setDExp([...dailyData])
         // console.log(dailyData)
-
+        ToastAndroid.show("Saved changes", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
         
+        setSaving(false)
+
+        closeModal()
     } 
 
     useEffect(() => {
@@ -55,7 +66,17 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
             id: editEl[0].id,
             title: editElTitle,
             money: editElPrice
-        })        
+        })
+
+        if(editEl[0].title == editElTitle && editEl[0].money == editElPrice) {
+            setSaveBtnDisabled(true)
+        }
+        if(editEl[0].title != editElTitle) {
+            setSaveBtnDisabled(false)
+        }
+        if(editEl[0].money != editElPrice) {
+            setSaveBtnDisabled(false)
+        }
         // console.log({
         //     id: editEl[0].id,
         //     title: editElTitle,
@@ -66,17 +87,16 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
     return (
         <View>
             <Modal
-            animationType="slide"
-            transparent={true}
-            visible={visibility}
-            onRequestClose={() => {
-                setVisibility(!visibility)                    
-            }}
+                animationType="slide"
+                transparent={true}
+                visible={visibility}
+                onRequestClose={() => {
+                    setVisibility(!visibility)                    
+                }}
             >
                 <Pressable
                     style={styles.centeredView}
                     onPressOut={Keyboard.dismiss}
-                    // () => setVisibility(false)
                 >
                     <View>
                         <View style={styles.modalView}>
@@ -123,10 +143,20 @@ export default function EditModal({ visibility, setVisibility, editEl, setDExp, 
                             />
 
                             <TouchableOpacity
-                                style={styles.button}
+                                style={[styles.button, {backgroundColor: saveBtnDisabled ? 'hsla(78, 52%, 52%, 0.4)' : 'hsla(78, 52%, 52%, 0.8)'}]}
                                 onPress={() => editDaily(ID)}
+                                disabled={saveBtnDisabled}
                             >
-                                <Text style={styles.textStyle}>Save</Text>
+                                <Text style={[styles.textStyle, {color: saveBtnDisabled ? 'white' : 'white'}]}>
+                                    { !saving && 'Save' }
+                                    { saving && (
+                                        <ActivityIndicator 
+                                            size="small"
+                                            color="white"
+                                        />
+                                    ) 
+                                    }
+                                </Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -159,7 +189,7 @@ const styles = StyleSheet.create({
         margin: 20,
         backgroundColor: "white",
         borderRadius: 20,
-        padding: 35,
+        padding: 45,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: {
@@ -171,7 +201,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     button: {
-        backgroundColor: '#2ecc71',
+        backgroundColor: 'hsla(78, 52%, 52%, 1)',
         borderRadius: 20,
         padding: 10,
         paddingHorizontal: 20
@@ -187,12 +217,12 @@ const styles = StyleSheet.create({
     textStyle: {
         color: "white",
         fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
     },
     modalText: {
         marginBottom: 15,
         textAlign: "center",
-    
+        paddingHorizontal: 20,
         fontWeight: 'bold',
         fontSize: 20
     }
