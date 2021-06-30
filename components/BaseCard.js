@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, Image, ActivityIndicator, Animated } from "react-native";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 
 import { useFonts, SourceSansPro_700Bold_Italic } from "@expo-google-fonts/dev";
@@ -78,13 +78,14 @@ export default function BaseCard({
           colors={body == "" ? ["#E1E1E1", "#E1E1E1"] : ["#A5D5FE", "#A5D5FE"]}
           style={styles.card}
         >
-          <View style={styles.expBox}>
-            <BaseCardElement
-              data={body}
-              type={type}
-              total={roundedSumMonthly}
-              setDaily={setDaily}
-            />
+            <View style={styles.expBox}>
+                
+                <BaseCardElement
+                    data={body}
+                    type={type}
+                    total={roundedSumMonthly}
+                    setDaily={setDaily}
+                />
 
             {body != "" && (
               <Text style={styles.totalExp}>

@@ -7,7 +7,7 @@ import unique from '../helpers/unique'
 
 import EditModal from './EditModal'
 
-const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
+const RightDeleteAction = ({progress, dragX, setDailyExp, itemId, moveAnim}) => {
     const scale = dragX.interpolate({
         inputRange: [-50, 0],
         outputRange: [1.0, 0],
@@ -15,9 +15,10 @@ const RightDeleteAction = ({progress, dragX, setDailyExp, itemId}) => {
     });
 
     const deleteFromDay = (id) => {
+        // moveAnim()
         setDailyExp((prevDaily) => {
           return prevDaily.filter(daily => daily.id != id)
-        });
+        });        
     }
 
     return (
@@ -105,50 +106,76 @@ const LeftEditAction = ({ progress, dragX, setDailyExp, itemId, d }) => {
 
 export default function BaseCardElement({ data, type, total, setDaily }) {
     
+    const moveLeft = useState(new Animated.Value(0))[0]
+
+    function moveElem() {
+        Animated.timing(moveLeft, {
+            toValue: 500,
+            duration: 1500,
+            useNativeDriver: true
+        }).start()
+    }
+    
     return (data &&  (
         <View>
-            {data.map((item) => (
+            
+                {data.map((item) => (
 
-                type==1 && (
+                    type==1 && (
+                        
+                        // <Animated.View style={[
+                        //     {
+                        //         transform: [
+                        //             {
+                        //                 translateX: moveLeft
+                        //             }
+                        //         ],
+                        //     }
+                        //     ]}>
+                        
+                            <View key={item.id} style={styles.singleExpView}>
+                                {/* • {item.title}: {item.money}$ */}
 
-                <View key={item.id} style={styles.singleExpView}>
-                    {/* • {item.title}: {item.money}$ */}
-
-                    <Swipeable                
-                        renderRightActions={(progress, dragX, setD, itemId) => <RightDeleteAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} />}
-                        renderLeftActions={(progress, dragX, setD, itemId, d) => <LeftEditAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} d={data} />}
-                        // onSwipeableRightOpen={() => deleteDaily(item.id)}
-                        // onActivated={() => addBorder()}
-                        friction={1.5}
-                    >
-                        <View style={styles.singleExpElem}>
-                            <View style={styles.elementTitleView}>
-                            {/* 
-                                {data.indexOf(item) + 1}: 
-                                ({item.id})
-                            */}
-                                <Text style={{ textAlign: 'center' }}>{item.title}</Text>
-                            </View>
-                            <View style={styles.elementLine}>
-                                <Text style={styles.elementLineText}></Text>
-                            </View>
-                            <View style={styles.elementMoney}>
-                                <Text style={{ textAlign: 'center' }}>{parseFloat(item.money).toFixed(2)} $</Text>
-                            </View>
-
-                            {/* <View >
-                                <TouchableOpacity 
-                                    // style={styles.elementRemoveText}
+                                <Swipeable                
+                                    renderRightActions={(progress, dragX, setD, itemId, moveAnim) => <RightDeleteAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} moveAnim={moveElem} />}
+                                    renderLeftActions={(progress, dragX, setD, itemId, d) => <LeftEditAction progress={progress} dragX={dragX} setDailyExp={setDaily} itemId={item.id} d={data} />}
+                                    // onSwipeableRightOpen={() => deleteDaily(item.id)}
+                                    // onActivated={() => addBorder()}
+                                    friction={1.5}
                                 >
-                                </TouchableOpacity>
-                            </View>                     */}
-                        </View>
-                    </Swipeable>
 
-                </View>
-                )
-                
-            ))}
+                                    
+                                        <View style={styles.singleExpElem}>
+                                            <View style={styles.elementTitleView}>
+                                            {/* 
+                                                {data.indexOf(item) + 1}: 
+                                                ({item.id})
+                                            */}
+                                                <Text style={{ textAlign: 'center' }}>{item.title}</Text>
+                                            </View>
+                                            <View style={styles.elementLine}>
+                                                <Text style={styles.elementLineText}></Text>
+                                            </View>
+                                            <View style={styles.elementMoney}>
+                                                <Text style={{ textAlign: 'center' }}>{parseFloat(item.money).toFixed(2)} $</Text>
+                                            </View>
+
+                                            {/* <View >
+                                                <TouchableOpacity 
+                                                    // style={styles.elementRemoveText}
+                                                >
+                                                </TouchableOpacity>
+                                            </View>                     */}
+                                        </View>
+                                    
+                                </Swipeable>
+
+                            </View>
+                        // </Animated.View>
+                    )
+                    
+                ))}
+            
 
             {type==2 && (
                 unique(data, "title").map((item) => (
@@ -184,7 +211,6 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: "black",
     // borderStyle: "solid",
-        
     
   },
   singleExpElem: {
@@ -213,7 +239,9 @@ const styles = StyleSheet.create({
 
     flex: 1.5,
 
-    padding: 5
+    padding: 5,
+
+    elevation: 3
   },
   elementLine: {
     // borderColor: '#F05340',
@@ -232,7 +260,9 @@ const styles = StyleSheet.create({
 
     flex: 0.5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
+    elevation: 0
   },
   elementLineText: {
       
@@ -246,8 +276,9 @@ const styles = StyleSheet.create({
 
     flex: 1,
 
-    padding: 5
+    padding: 5,
     
+    elevation: 0
   },
 //   elementRemove: {
 //     flex: 0.25,
