@@ -5,10 +5,10 @@ import { StyleSheet, Text, View, Modal, Pressable, TouchableOpacity, Keyboard, T
 import { Icon } from "react-native-elements";
 import { Input } from 'react-native-elements';
 
-export default function EditModal({ visibility, setVisibility, editEl }) {
+export default function EditModal({ visibility, setVisibility, editEl, setDExp, ID, dailyData }) {
     const closeModal = () => {           
         setVisibility(!visibility)
-    }
+    }    
 
     const [editElTitle, setEditElTitle] = useState(editEl[0].title)
     const [editElPrice, setEditElPrice] = useState(editEl[0].money)
@@ -16,31 +16,51 @@ export default function EditModal({ visibility, setVisibility, editEl }) {
     const [editForm, setEditForm] = useState({
         id: editEl[0].id,
         title: editElTitle,
-        money: editElPrice,
+        money: parseFloat(editElPrice),
     })
 
     const handleEditName = (value) => {
         setEditElTitle(value)
-        
-               
     }
 
     const handleEditPrice = (value) => {
-        setEditElPrice(value)   
-        
+        setEditElPrice(parseFloat(value))
     }
+
+    const editDaily = (id) => {
+
+        const objIndex = dailyData.findIndex((obj => obj.id == id))
+        
+        dailyData.some((daily) => {
+            if(daily.id == ID) {
+                if(daily.title != editElTitle) {
+                    daily.title = editElTitle                
+                }
+                if(daily.money != editElPrice) {
+                    daily.money = editElPrice
+                }
+                dailyData.splice(objIndex, 1)
+                dailyData.splice(objIndex, 0, editForm)
+            }
+        })
+
+        setDExp([...dailyData])
+        // console.log(dailyData)
+
+        
+    } 
 
     useEffect(() => {
         setEditForm({
             id: editEl[0].id,
             title: editElTitle,
             money: editElPrice
-        })
-        console.log({
-            id: editEl[0].id,
-            title: editElTitle,
-            money: editElPrice
-        })
+        })        
+        // console.log({
+        //     id: editEl[0].id,
+        //     title: editElTitle,
+        //     money: editElPrice
+        // })
     }, [editElTitle, editElPrice])
 
     return (
@@ -104,7 +124,7 @@ export default function EditModal({ visibility, setVisibility, editEl }) {
 
                             <TouchableOpacity
                                 style={styles.button}
-                                onPress={() => editDaily()}
+                                onPress={() => editDaily(ID)}
                             >
                                 <Text style={styles.textStyle}>Save</Text>
                             </TouchableOpacity>

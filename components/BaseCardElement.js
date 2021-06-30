@@ -59,6 +59,12 @@ const LeftEditAction = ({ progress, dragX, setDailyExp, itemId, d }) => {
         return d.filter(daily => daily.id == id)
     } 
 
+    // const deleteFromDay = (id) => {
+    //     setDailyExp((prevDaily) => {
+    //       return prevDaily.filter(daily => daily.id != id)
+    //     });
+    // }
+
     // const [editElem, setEditElem] = useState(editDaily(itemId))       
 
     const handleLeftEditClick = () => {
@@ -88,6 +94,9 @@ const LeftEditAction = ({ progress, dragX, setDailyExp, itemId, d }) => {
                     visibility={editModalVisibility}
                     setVisibility={setEditModalVisibility}
                     editEl={editDaily(itemId)}
+                    setDExp={setDailyExp}
+                    ID={itemId}
+                    dailyData={d}
                 />                
             </View>
         
