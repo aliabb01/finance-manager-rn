@@ -96,8 +96,8 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
         setDaily([...dailyExp, form])
         setDailyId(dailyId + 1)
         ToastAndroid.show(form.title + " - " + oldPrice + "$" + " was added to daily expenditures", ToastAndroid.SHORT, ToastAndroid.BOTTOM)
-        setFormItem('')
-        setFormItemPrice(0)
+        // setFormItem('')
+        // setFormItemPrice(0)
     }
 
     
@@ -126,6 +126,8 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
         setInputNameBorder('gray')
         setInputPriceBorder('gray')
         setVisibility(!visibility)
+        setFormItem('')
+        setFormItemPrice(0)
     }
 
     
@@ -153,10 +155,10 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
                             <Input
                                 containerStyle={{ marginTop: 20 }}
                                 label='Item:'
-                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: '#6C8EEF' }}
+                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: 'hsla(214, 89%, 52%, 1)' }}
                                 inputStyle={{ fontSize: 15 }}
                                 inputContainerStyle={{ borderBottomColor: inputNameBorder }}
-                                onFocus={() => setInputNameBorder('#2196F3')}
+                                onFocus={() => setInputNameBorder('hsla(214, 89%, 52%, 1)')}
                                 onBlur={() => setInputNameBorder('gray')}
                                 placeholder='Enter Item'
                                 onChangeText={handleNameChange}
@@ -169,10 +171,10 @@ export default function AddModal({ visibility, setVisibility, toggleFunction, da
                             <Input
                                 containerStyle={{ marginTop: 20, marginBottom: 20 }}
                                 label='Price:'
-                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: '#6C8EEF' }}
+                                labelStyle={{ fontSize: 13, fontWeight: 'bold', color: 'hsla(214, 89%, 52%, 1)' }}
                                 inputStyle={{ fontSize: 15 }}
                                 inputContainerStyle={{ borderBottomColor: inputPriceBorder }}
-                                onFocus={() => setInputPriceBorder('#2196F3')}
+                                onFocus={() => setInputPriceBorder('hsla(214, 89%, 52%, 1)')}
                                 onBlur={() => setInputPriceBorder('gray')}
                                 placeholder='Enter price'
                                 onChangeText={handlePriceChange}
@@ -228,7 +230,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 45,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -240,7 +242,7 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    backgroundColor: '#6C8EEF',
+    backgroundColor: 'hsla(214, 100%, 63%, 0.25)',
     borderRadius: 20,
     padding: 10,
   },
@@ -253,7 +255,7 @@ const styles = StyleSheet.create({
     top: 10
   },
   textStyle: {
-    color: "white",
+    color: "hsla(214, 100%, 63%, 1)",
     fontWeight: "bold",
     textAlign: "center"
   },
