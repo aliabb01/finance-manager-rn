@@ -117,7 +117,7 @@ export default function App() {
       >
       </ScrollView> */}
       {animating 
-      ? <View style={[styles.container, styles.horizontal]}><LinearProgress color="primary" /></View>
+      ? <View style={[styles.container, styles.horizontal]}><ActivityIndicator size="large" color="primary" /></View>
       : <AppTabs />}
       
     </NavigationContainer>
