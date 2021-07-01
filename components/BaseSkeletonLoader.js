@@ -17,22 +17,22 @@ const BaseSkeletonLoader = (props) => (
     {...props}
   >
     <Circle cx="25" cy="30" r="12" /> 
-    <Rect x="50" y="25" rx="5" ry="5" width="85%" height="10" /> 
+    <Rect x="50" y="25" rx="5" ry="5" width="85%" height="11" /> 
 
     <Circle cx="25" cy="60" r="12" /> 
-    <Rect x="50" y="55" rx="5" ry="5" width="85%" height="10" /> 
+    <Rect x="50" y="55" rx="5" ry="5" width="85%" height="11" /> 
 
     <Circle cx="25" cy="90" r="12" /> 
-    <Rect x="50" y="85" rx="5" ry="5" width="85%" height="10" /> 
+    <Rect x="50" y="85" rx="5" ry="5" width="85%" height="11" /> 
 
     <Circle cx="25" cy="120" r="12" /> 
-    <Rect x="50" y="115" rx="5" ry="5" width="85%" height="10" />
+    <Rect x="50" y="115" rx="5" ry="5" width="85%" height="11" />
 
     <Circle cx="25" cy="150" r="12" /> 
-    <Rect x="50" y="145" rx="5" ry="5" width="85%" height="10" /> 
+    <Rect x="50" y="145" rx="5" ry="5" width="85%" height="11" /> 
     
-    <Circle cx="25" cy="180" r="12" /> 
-    <Rect x="50" y="175" rx="5" ry="5" width="85%" height="10" />
+    {/* <Circle cx="25" cy="180" r="12" /> 
+    <Rect x="50" y="175" rx="5" ry="5" width="75%" height="11" /> */}
     
     
   </ContentLoader>

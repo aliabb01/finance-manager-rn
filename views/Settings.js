@@ -7,17 +7,18 @@ function Settings() {
 
     return (
         <View style={[styles.settingsLabelContainer, darkMode ? styles.darkStyle : '']}>
-            <Text style={styles.settingsLabel}>Settings page</Text>
+            <Text style={styles.settingsLabel}>Settings:</Text>
 
             <View style={styles.settingsContainer}>
-                <Text>Dark mode</Text>
+                <Text>Coming soon...</Text>
+                {/* <Text>Dark mode</Text>
 
                 <Switch
                     trackColor={{ false: '#767577', true: 'red' }}
                     thumbColor={ darkMode ? '#f5dd4b' : '#f4f3f4' }
                     onValueChange={toggleSwitch}
                     value={darkMode}
-                />
+                /> */}
             </View>
         </View>
     )

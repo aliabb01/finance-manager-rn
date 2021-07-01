@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, ActivityIndicator, Animated } from "react-native";
-import { Card, ListItem, Button, Icon } from "react-native-elements";
+// import { Card, ListItem, Button, Icon } from "react-native-elements";
 
 import { useFonts, SourceSansPro_700Bold_Italic } from "@expo-google-fonts/dev";
 

@@ -4,10 +4,10 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 function Statistics() {
     return (
         <View style={styles.statsLabelContainer}>
-            <Text style={styles.statsLabel}>Statistics page</Text>
+            <Text style={styles.statsLabel}>Statistics:</Text>
 
             <View style={styles.statsContainer}>
-                <Text>Stats here ...</Text>
+                <Text>Coming soon...</Text>
             </View>
         </View>
     )

@@ -192,7 +192,7 @@ function Home() {
         wait(0).then(() => setRefreshing(false)).then(() => {
             // NativeModules.DevSettings.reload();
             setLoading(true)
-            wait(2000).then(() => setLoading(false))
+            wait(1000).then(() => setLoading(false))
         })
         
     })
