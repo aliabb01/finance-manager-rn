@@ -4,9 +4,13 @@
   "expo": {
     "name": "FinanceManager",
     "slug": "FinanceManager",
-    "version": "1.0.0",
+    "icon": "./app_icon/logo.png",
+    "version": "0.1.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "io.financemanager.client"
+    }
   }
 }
